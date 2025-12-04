@@ -1,0 +1,7 @@
+services:
+  lab:
+    image: lab
+    volumes:
+      - $PWD/container_local:/home/ubuntu/.local
+      - $PWD/data:/home/ubuntu/
+      - $PWD/config/nvim:/home/ubuntu/.config/nvim
