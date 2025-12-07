@@ -1,2 +1,0 @@
-chocolat=pizza=a bc
-dindonneau=volaille
