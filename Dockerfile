@@ -50,6 +50,15 @@ RUN curl -sLo marksman --output-dir /usr/local/bin/ \
   https://github.com/artempyanykh/marksman/releases/download/2025-11-30/marksman-linux-arm64 \
 && chmod 755 /usr/local/bin/marksman
 
+RUN curl -sLO https://ziglang.org/builds/zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b.tar.xz \
+&& tar -xf zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b.tar.xz \
+&& ln -s $PWD/zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b/zig /usr/local/bin
+
+RUN git clone https://github.com/zigtools/zls \
+&& cd zls \
+&& zig build -Doptimize=ReleaseSafe \
+&& ln -s $PWD/zig-out/bin/zls /usr/local/bin
+
 ARG USER=ubuntu
 ARG HOME=/home/ubuntu
 
