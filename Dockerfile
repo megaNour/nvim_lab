@@ -10,8 +10,6 @@ RUN apt update && apt install -y --no-install-recommends \
     curl \
     ripgrep \
     fd-find \
-    lua5.1 \
-    liblua5.1-dev \
     libunwind-dev \
     libbfd-dev \
     python3 python3-pip python3.12-venv \
@@ -24,27 +22,22 @@ RUN apt update && apt install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+    # lua5.1 \
+    # liblua5.1-dev \
 WORKDIR /opt
 
-RUN curl -sLO https://luarocks.org/releases/luarocks-3.12.2.tar.gz \
-&& tar zxpf luarocks-3.12.2.tar.gz \
-&& cd luarocks-3.12.2 \
-&& ./configure \
-&& make \
-&& make install
+# RUN curl -sLO https://luarocks.org/releases/luarocks-3.12.2.tar.gz \
+# && tar zxpf luarocks-3.12.2.tar.gz \
+# && cd luarocks-3.12.2 \
+# && ./configure \
+# && make \
+# && make install
 
 RUN git clone --depth 1 --branch v0.11.5 https://github.com/neovim/neovim \
 && cd neovim \
 && make CMAKE_BUILD_TYPE=RelWithDebInfo \
 && make install \
 && ln -s /usr/local/bin/nvim /usr/local/bin/nv
-
-RUN git clone https://github.com/LuaLS/lua-language-server \
-&& cd lua-language-server \
-&& chmod 744 ./make.sh \
-&& ./make.sh \
-&& ln -s $PWD/build/bin/lua-language-server /usr/local/bin
-
 
 RUN curl -sLo marksman --output-dir /usr/local/bin/ \
   https://github.com/artempyanykh/marksman/releases/download/2025-11-30/marksman-linux-arm64 \
