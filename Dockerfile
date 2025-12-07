@@ -14,7 +14,6 @@ RUN apt update && apt install -y --no-install-recommends \
     liblua5.1-dev \
     libunwind-dev \
     libbfd-dev \
-    nodejs npm \
     python3 python3-pip \
     build-essential \
     ca-certificates \
@@ -46,12 +45,23 @@ RUN git clone https://github.com/LuaLS/lua-language-server \
 && ./make.sh \
 && ln -s $PWD/build/bin/lua-language-server /usr/local/bin
 
-COPY config/.editorconfig /home/$USER/
+
+RUN curl -sLo marksman --output-dir /usr/local/bin/ \
+  https://github.com/artempyanykh/marksman/releases/download/2025-11-30/marksman-linux-arm64 \
+&& chmod 755 /usr/local/bin/marksman
 
 ARG USER=ubuntu
+ARG HOME=/home/ubuntu
 
 USER $USER
-WORKDIR /home/$USER
+WORKDIR $HOME
+
+RUN touch $HOME/.bashrc && curl https://get.volta.sh | bash \
+&& bash -ic "volta install node@24"
+
+COPY config/.editorconfig /home/$USER/
+
+WORKDIR $HOME
 
 ENV XDG_CONFIG_HOME=/home/$USER/.config
 ENV XDG_CACHE_HOME=/home/$USER/.cache

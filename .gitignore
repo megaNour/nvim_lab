@@ -1,3 +1,5 @@
 container_*
 .cache
 .bash_*
+.npm
+node_modules
