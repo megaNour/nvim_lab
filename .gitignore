@@ -3,3 +3,4 @@ container_*
 .bash_*
 .npm
 node_modules
+.venv
