@@ -12,6 +12,8 @@ RUN apt update && apt install -y --no-install-recommends \
     fd-find \
     lua5.1 \
     liblua5.1-dev \
+    libunwind-dev \
+    libbfd-dev \
     nodejs npm \
     python3 python3-pip \
     build-essential \
@@ -23,7 +25,7 @@ RUN apt update && apt install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /tmp
+WORKDIR /opt
 
 RUN curl -sLO https://luarocks.org/releases/luarocks-3.12.2.tar.gz \
 && tar zxpf luarocks-3.12.2.tar.gz \
@@ -37,6 +39,12 @@ RUN git clone --depth 1 --branch v0.11.5 https://github.com/neovim/neovim \
 && make CMAKE_BUILD_TYPE=RelWithDebInfo \
 && make install \
 && ln -s /usr/local/bin/nvim /usr/local/bin/nv
+
+RUN git clone https://github.com/LuaLS/lua-language-server \
+&& cd lua-language-server \
+&& chmod 744 ./make.sh \
+&& ./make.sh \
+&& ln -s $PWD/build/bin/lua-language-server /usr/local/bin
 
 COPY config/.editorconfig /home/$USER/
 
