@@ -12,6 +12,7 @@ RUN apt update && apt install -y --no-install-recommends \
     fd-find \
     libunwind-dev \
     libbfd-dev \
+    software-properties-common \
     python3 python3-pip python3.12-venv \
     build-essential \
     ca-certificates \
@@ -22,8 +23,11 @@ RUN apt update && apt install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-    # lua5.1 \
-    # liblua5.1-dev \
+RUN apt update && add-apt-repository ppa:longsleep/golang-backports \
+&& apt update \
+&& apt install -y golang-go \
+&& go install mvdan.cc/sh/v3/cmd/shfmt@latest
+
 WORKDIR /opt
 
 # RUN curl -sLO https://luarocks.org/releases/luarocks-3.12.2.tar.gz \
