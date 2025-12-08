@@ -38,10 +38,7 @@ RUN apt install -y --no-install-recommends \
 
 RUN apt update && add-apt-repository ppa:longsleep/golang-backports \
 && apt update \
-&& apt install -y golang-go \
-&& go install mvdan.cc/sh/v3/cmd/shfmt@latest
-
-WORKDIR /opt
+&& apt install -y golang-go
 
 # RUN curl -sLO https://luarocks.org/releases/luarocks-3.12.2.tar.gz \
 # && tar zxpf luarocks-3.12.2.tar.gz \
@@ -66,12 +63,16 @@ ARG HOME=/home/ubuntu
 USER $USER
 WORKDIR $HOME
 
-RUN touch $HOME/.bashrc && curl https://get.volta.sh | bash \
-&& bash -ic "volta install node@24"
-
 COPY config/.editorconfig /home/$USER/
 
+RUN touch $HOME/.bashrc && curl https://get.volta.sh | bash \
+&& bash -ic "volta install node@24 && volta install yaml-language-server"
+
 WORKDIR $HOME
+
+RUN go install mvdan.cc/sh/v3/cmd/shfmt@latest
+RUN echo export PATH=\$PATH:\$HOME/go/bin >> $HOME/.bashrc
+
 
 ENV XDG_CONFIG_HOME=/home/$USER/.config
 ENV XDG_CACHE_HOME=/home/$USER/.cache
