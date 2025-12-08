@@ -2,6 +2,8 @@ FROM ubuntu:24.04
 
 ENV debian_frontend=noninteractive
 
+WORKDIR /opt
+
 RUN apt update && apt install -y --no-install-recommends \
     cmake \
     ninja-build \
