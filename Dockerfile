@@ -5,19 +5,30 @@ ENV debian_frontend=noninteractive
 WORKDIR /opt
 
 RUN apt update && apt install -y --no-install-recommends \
+    git \
+    curl \
+    build-essential \
+    ca-certificates
+
+RUN curl -sLO https://ziglang.org/builds/zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b.tar.xz \
+&& tar -xf zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b.tar.xz \
+&& ln -s $PWD/zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b/zig /usr/local/bin
+
+RUN git clone https://github.com/zigtools/zls \
+&& cd zls \
+&& zig build -Doptimize=ReleaseSafe \
+&& ln -s $PWD/zig-out/bin/zls /usr/local/bin
+
+RUN apt install -y --no-install-recommends \
     cmake \
     ninja-build \
     gettext \
-    git \
-    curl \
     ripgrep \
     fd-find \
     libunwind-dev \
     libbfd-dev \
     software-properties-common \
     python3 python3-pip python3.12-venv \
-    build-essential \
-    ca-certificates \
     unzip \
     ncurses-term \
     locales \
@@ -48,15 +59,6 @@ RUN git clone --depth 1 --branch v0.11.5 https://github.com/neovim/neovim \
 RUN curl -sLo marksman --output-dir /usr/local/bin/ \
   https://github.com/artempyanykh/marksman/releases/download/2025-11-30/marksman-linux-arm64 \
 && chmod 755 /usr/local/bin/marksman
-
-RUN curl -sLO https://ziglang.org/builds/zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b.tar.xz \
-&& tar -xf zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b.tar.xz \
-&& ln -s $PWD/zig-aarch64-linux-0.16.0-dev.1484+d0ba6642b/zig /usr/local/bin
-
-RUN git clone https://github.com/zigtools/zls \
-&& cd zls \
-&& zig build -Doptimize=ReleaseSafe \
-&& ln -s $PWD/zig-out/bin/zls /usr/local/bin
 
 ARG USER=ubuntu
 ARG HOME=/home/ubuntu
