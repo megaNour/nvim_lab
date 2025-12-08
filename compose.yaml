@@ -2,6 +2,6 @@ services:
   lab:
     image: lab
     volumes:
-      - $PWD/container_local:/home/ubuntu/.local
-      - $PWD/data/nvim-props:/home/ubuntu/nvim-props
-      - $PWD/config/nvim:/home/ubuntu/.config/nvim
+      - $ENTRY/container_local:/home/ubuntu/.local
+      - $ENTRY/data/nvim-props:/home/ubuntu/nvim-props
+      - $ENTRY/config/nvim:/home/ubuntu/.config/nvim
