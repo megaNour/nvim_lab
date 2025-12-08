@@ -31,6 +31,7 @@ RUN apt install -y --no-install-recommends \
     python3 python3-pip python3.12-venv \
     unzip \
     ncurses-term \
+    shellcheck \
     locales \
     && locale-gen en_US.UTF-8 \
     && apt-get clean \
